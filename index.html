@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Charging a Capacitor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div id="page">
+      <span class="material-symbols-outlined" id="electric-bolt">
+        electric_bolt
+      </span>
+      <span class="material-symbols-outlined" id="battery-charging-full">
+        battery_charging_full
+      </span>
+      <div>
+        <h1>Discharging a Capacitor</h1>
+        
+        <form id="valueForm">
+          <input
+            type="number"
+            id="submitValue"
+            placeholder="Mean value for PD/current"
+          />
+          <button onclick="addValueToValues(event)">Submit Value</button>
+          <p id="inputValuesDisplay">No values yet</p>
+        </form>
+
+        <input
+          id="submitTimeInterval"
+          type="number"
+          placeholder="Time interval in seconds"
+        />
+        <button onclick="submitTimeInterval(event)">Submit</button>
+        <p id="submitTimeIntervalDisplay">No value yet</p>
+        
+        <input
+          id="submitCapacitance"
+          type="number"
+          placeholder="Capacitance in μF"
+        />
+        <button onclick="submitCapacitance(event)">Submit</button>
+        <p id="submitCapacitanceDisplay">No value yet</p>
+
+        <button onclick="generateGraphs()" id="generate-graphs" class="btn">
+          Generate Graphs
+        </button>
+        <p>
+          This Web Application will work for both charging and discharging a
+          capacitor, however will only work visually for values of a discharging
+          capacitor.
+        </p>
+      </div>
+    </div>
+    <div id="graphs-container">
+      <h2>PD against time</h2>
+      <h2>Log<sub>e</sub>(PD against time)</h2>
+      <div>
+        <canvas id="normal-graph"></canvas>
+      </div>
+      <div>
+        <canvas id="log-graph"></canvas>
+      </div>
+      <p>
+        If you have the correct values, your graph should look like y=x<sup>-1</sup> if
+        you're charging a capacitor, and y=x<sup>1/2</sup> if you're discharging a
+        capacitor.
+      </p>
+      <p>
+        You should see your curved line become a straight line here if you're
+        discharging a capacitor and your values are correct. You will not see a
+        straight line here for charging because charging process does not follow
+        a simple logarithmic relationship, rather an exponential growth
+        function.
+      </p>
+      <table>
+        <tr id="first-row">
+          <th>Quality</th>
+          <th>10</th>
+          <th>20</th>
+          <th>30</th>
+          <th>40</th>
+          <th>50</th>
+          <th>60</th>
+          <th>70</th>
+          <th>80</th>
+          <th>90</th>
+          <th>100</th>
+        </tr>
+        <tr id="second-row">
+          <td>PD</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+        </tr>
+        <tr id="third-row">
+          <td>Charge</td>
+          <td>0.015</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+        </tr>
+      </table>
+    </div>
+    <script>
+      values = [];
+      logOfValues = [];
+      logOfXAxis = [];
+      let timeInterval = 0;
+      function addValueToValues(event) {
+        let inputValue = document.getElementById("submitValue").value;
+        if (inputValue <= 0) {
+          alert("Please type in a non-zero positive value");
+          event.preventDefault();
+        } else {
+          event.preventDefault();
+          values.push(" " + inputValue);
+          document.getElementById("inputValuesDisplay").innerText = values;
+          document.querySelector("form").reset();
+        }
+      }
+
+      function submitTimeInterval(event) {
+        timeInterval = document.getElementById("submitTimeInterval").value;
+        localStorage.setItem("storedTimeInterval", timeInterval);
+        event.preventDefault();
+        document.getElementById("submitTimeIntervalDisplay").innerText =
+          timeInterval + " seconds";
+        document.querySelector("form").reset();
+      }
+
+      function submitCapacitance(event) {
+        capacitance = document.getElementById("submitCapacitance").value;
+        localStorage.setItem("storedCapacitance", capacitance);
+        event.preventDefault();
+        document.getElementById("submitCapacitanceDisplay").innerText =
+        capacitance + " μF";
+        document.querySelector("form").reset();
+      }
+
+      
+      storedTimeInterval = localStorage.getItem("storedTimeInterval");
+
+      function generateGraphs() {
+        document.getElementById("graphs-container").style.display = "grid";
+        for (let i = 0; i < values.length; i++) {
+          logOfValues.push(Math.log(parseFloat(values[i])).toFixed(2));
+        }
+
+        for (let i = 0; i < xAxis.length; i++) {
+          logOfXAxis.push(Math.log(xAxis[i]).toFixed(2));
+        }
+        const scrollOptions = {
+          top: document.body.scrollHeight,
+          behavior: "smooth", // Enable smooth scrolling
+        };
+        window.scrollTo(scrollOptions);
+
+
+        // ---------------------------------------- Table with PD and charge ----------------------------------------
+
+        charges = []
+        for (let i = 0; i < values.length; i++) {
+            charge = values[i] * (capacitance * (10 ** -6)).toFixed(4);
+        charges.push(charge)
+        }
+
+        document.getElementById("first-row").querySelector("th:nth-child(2)").innerText = xAxis[0]
+        document.getElementById("first-row").querySelector("th:nth-child(3)").innerText = xAxis[1]
+        document.getElementById("first-row").querySelector("th:nth-child(4)").innerText = xAxis[2]
+        document.getElementById("first-row").querySelector("th:nth-child(5)").innerText = xAxis[3]
+        document.getElementById("first-row").querySelector("th:nth-child(6)").innerText = xAxis[4]
+        document.getElementById("first-row").querySelector("th:nth-child(7)").innerText = xAxis[5]
+        document.getElementById("first-row").querySelector("th:nth-child(8)").innerText = xAxis[6]
+        document.getElementById("first-row").querySelector("th:nth-child(9)").innerText = xAxis[7]
+        document.getElementById("first-row").querySelector("th:nth-child(10)").innerText = xAxis[8]
+        document.getElementById("first-row").querySelector("th:nth-child(11)").innerText = xAxis[9]
+
+        document.getElementById("second-row").querySelector("td:nth-child(2)").innerText = values[0]
+        document.getElementById("second-row").querySelector("td:nth-child(3)").innerText = values[1]
+        document.getElementById("second-row").querySelector("td:nth-child(4)").innerText = values[2]
+        document.getElementById("second-row").querySelector("td:nth-child(5)").innerText = values[3]
+        document.getElementById("second-row").querySelector("td:nth-child(6)").innerText = values[4]
+        document.getElementById("second-row").querySelector("td:nth-child(7)").innerText = values[5]
+        document.getElementById("second-row").querySelector("td:nth-child(8)").innerText = values[6]
+        document.getElementById("second-row").querySelector("td:nth-child(9)").innerText = values[7]
+        document.getElementById("second-row").querySelector("td:nth-child(10)").innerText = values[8]
+        document.getElementById("second-row").querySelector("td:nth-child(11)").innerText = values[9]
+
+        
+        document.getElementById("third-row").querySelector("td:nth-child(2)").innerText = charges[0]
+        document.getElementById("third-row").querySelector("td:nth-child(3)").innerText = charges[1]
+        document.getElementById("third-row").querySelector("td:nth-child(4)").innerText = charges[2]
+        document.getElementById("third-row").querySelector("td:nth-child(5)").innerText = charges[3]
+        document.getElementById("third-row").querySelector("td:nth-child(6)").innerText = charges[4]
+        document.getElementById("third-row").querySelector("td:nth-child(7)").innerText = charges[5]
+        document.getElementById("third-row").querySelector("td:nth-child(8)").innerText = charges[6]
+        document.getElementById("third-row").querySelector("td:nth-child(9)").innerText = charges[7]
+        document.getElementById("third-row").querySelector("td:nth-child(10)").innerText = charges[8]
+        document.getElementById("third-row").querySelector("td:nth-child(11)").innerText = charges[9]
+
+      }
+      xAxis = [
+        storedTimeInterval,
+        storedTimeInterval * 2,
+        storedTimeInterval * 3,
+        storedTimeInterval * 4,
+        storedTimeInterval * 5,
+        storedTimeInterval * 6,
+        storedTimeInterval * 7,
+        storedTimeInterval * 8,
+        storedTimeInterval * 9,
+        storedTimeInterval * 10,
+      ];
+
+      // ------------------------------------------- Normal Graph setup ----------------------------------------------------
+
+      // Sample data for the line chart
+      const data = {
+        labels: xAxis,
+        datasets: [
+          {
+            label: "PD against time",
+            data: values, // Replace with your actual data
+            borderColor: "rgb(69, 131, 211)", // Line color
+            borderWidth: 2, // Line width
+            fill: false, // Don't fill the area under the line
+          },
+        ],
+      };
+
+      // Configuration options for the chart
+      const config = {
+        type: "line",
+        data: data,
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Time in seconds", // X-axis label
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)", // Color of the vertical grid lines
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "PD in Volts", // Y-axis label
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)", // Color of the horizontal grid lines
+              },
+            },
+          },
+          responsive: true, // Make the chart responsive
+          maintainAspectRatio: false, // Prevent maintaining aspect ratio
+          // Set width and height
+          width: 400, // Adjust the width as needed
+          height: 200,
+        },
+      };
+
+      // Create a line chart
+      const normalGraph = new Chart(
+        document.getElementById("normal-graph"),
+        config
+      );
+
+      // ------------------------------------------- Log Graph setup ----------------------------------------------------
+
+      const logData = {
+        labels: xAxis,
+        datasets: [
+          {
+            label: "PD against time",
+            data: logOfValues,
+            borderColor: "rgb(69, 131, 211)",
+            borderWidth: 2,
+            fill: false,
+          },
+        ],
+      };
+
+      // Configuration options for the chart
+      const logConfig = {
+        type: "line",
+        data: logData,
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Time in seconds",
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)",
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Log(PD in Volts)",
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.2)",
+              },
+            },
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          width: 400,
+          height: 200,
+        },
+      };
+
+      // Create a line chart
+      const logGraph = new Chart(
+        document.getElementById("log-graph"),
+        logConfig
+      );
+    </script>
+  </body>
+</html>

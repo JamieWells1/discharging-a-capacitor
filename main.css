@@ -1,0 +1,235 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: rgb(26, 26, 26);
+  color: rgb(221, 221, 221);
+}
+
+button {
+  width: 120px;
+}
+
+.btn {
+  background-color: rgb(54, 107, 175);
+  border-radius: 15px;
+  box-shadow: 10px 10px 20px rgb(51, 51, 51);
+  font-size: 16px;
+  color: white;
+}
+
+.btn:hover {
+  cursor: pointer;
+  transform: translateY(-8px);
+  transition: 0.5s ease;
+}
+
+input {
+  background-color: rgb(216, 216, 216);
+  border: 0px solid transparent;
+  padding: 10px;
+  width: 200px;
+  border-radius: 15px;
+}
+
+form > button {
+  padding: 10px;
+  border: 0px solid transparent;
+  border-radius: 15px;
+  font-size: 15px;
+  background-color: rgb(33, 139, 33);
+  color: white;
+}
+
+form > button:hover {
+  cursor: pointer;
+}
+
+form > p {
+  padding: 10px;
+  background-color: rgb(71, 71, 71);
+  margin-bottom: 5%;
+  width: fit-content;
+  border-radius: 10px;
+}
+
+form > button {
+  padding: 10px;
+  border: 0px solid transparent;
+  border-radius: 15px;
+  font-size: 15px;
+  background-color: rgb(33, 139, 33);
+  color: white;
+}
+
+form > button:hover {
+  cursor: pointer;
+}
+
+form > p {
+  padding: 10px;
+  background-color: rgb(71, 71, 71);
+  margin-bottom: 5%;
+  width: fit-content;
+  border-radius: 10px;
+}
+
+div > p,
+form > p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div > button {
+  padding: 10px;
+  border: 0px solid transparent;
+  border-radius: 15px;
+  font-size: 15px;
+  background-color: rgb(33, 139, 33);
+  color: white;
+}
+
+div > button:hover {
+  cursor: pointer;
+}
+
+div > p {
+  padding: 10px;
+  background-color: rgb(71, 71, 71);
+  margin-bottom: 10%;
+  width: fit-content;
+  border-radius: 10px;
+  font-size: 15px;
+  height: fit-content;
+}
+
+#electric-bolt {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  color: rgb(233, 233, 61);
+  font-size: 130px;
+}
+
+#battery-charging-full {
+  position: absolute;
+  right: 150px;
+  bottom: 150px;
+  font-size: 100px;
+  color: rgb(62, 226, 62);
+}
+
+#page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+#page > div {
+  position: relative;
+  top: 100px;
+}
+
+#page > div > h1 {
+  position: relative;
+  margin-top: -70px;
+}
+
+#page > div > p {
+  margin-bottom: 50px;
+  max-width: 500px;
+}
+
+#generate-graphs {
+  width: 200px;
+  transition: 0.5s ease;
+  border: 0px solid transparent;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+#generate-graphs:hover {
+  background-color: rgb(10, 46, 112);
+}
+
+#graphs-container {
+  margin-top: 200px;
+  place-content: center;
+  display: none;
+  grid-template-columns: 40% 40%;
+  grid-template-rows: 50px 400px;
+  gap: 20px;
+  overflow: hidden;
+}
+
+#graphs-container > div {
+  background-color: rgb(36, 36, 36);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+#graphs-container > h2 {
+  text-align: center;
+}
+
+canvas {
+  position: relative;
+}
+
+table {
+  border-collapse: collapse;
+  width: 75%;
+  grid-column: span 2;
+  margin: auto;
+  margin-bottom: 50px;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(1) {
+  background-color: #353535;
+}
+
+/* --------------------------------- Responsiveness ----------------------------------- */
+
+@media screen and (max-width: 1000px) {
+  #electric-bolt {
+    display: none;
+  }
+
+  #battery-charging-full {
+    display: none;
+  }
+
+  #graphs-container {
+    grid-template-columns: 75%;
+    grid-template-rows: 100px 300px 100px 100px 300px 100px;
+  }
+
+  #graphs-container > :nth-child(2) {
+    order: 4;
+  }
+
+  #graphs-container > :nth-child(3) {
+    order: 3;
+  }
+
+  #graphs-container > :nth-child(6) {
+    order: 5;
+  }
+
+  #graphs-container > :nth-child(2) {
+    order: 3;
+  }
+}
