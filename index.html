@@ -29,7 +29,7 @@
             id="submitValue"
             placeholder="Mean value for PD/current"
           />
-          <button onclick="addValueToValues(event)">Submit Value</button>
+          <button onclick="addValueToValues(event)">Add Value</button>
           <p id="inputValuesDisplay">No values yet</p>
         </form>
 
@@ -38,7 +38,7 @@
           type="number"
           placeholder="Time interval in seconds"
         />
-        <button onclick="submitTimeInterval(event)">Submit</button>
+        <button onclick="submitTimeInterval(event)">Add</button>
         <p id="submitTimeIntervalDisplay">No value yet</p>
         
         <input
@@ -46,7 +46,7 @@
           type="number"
           placeholder="Capacitance in μF"
         />
-        <button onclick="submitCapacitance(event)">Submit</button>
+        <button onclick="submitCapacitance(event)">Add</button>
         <p id="submitCapacitanceDisplay">No value yet</p>
 
         <button onclick="generateGraphs()" id="generate-graphs" class="btn">
