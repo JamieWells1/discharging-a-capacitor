@@ -138,6 +138,9 @@
           document.getElementById("inputValuesDisplay").innerText = values;
           document.querySelector("form").reset();
         }
+        if (values.length > 11) {
+          alert("Maximum values reached");
+        }
       }
 
       function submitTimeInterval(event) {
